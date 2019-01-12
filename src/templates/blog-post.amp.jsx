@@ -3,16 +3,26 @@
 import * as React from 'react'
 import { graphql } from 'gatsby'
 import AmpLayout from '../components/AmpLayout'
+import Published from '../components/Published'
+import IntroToWebpackMiniSeries from '../components/IntroToWebpackMiniSeries'
 
-function BlogPostAmpTemplate({ data }) {
+const isIntroToWebpackMiniSeries = tags =>
+  tags.filter(tag => tag === 'webpack-intro-series').length > 0
+
+function BlogPostAmpTemplate({ data, location }) {
   const post = data.markdownRemark
+  const { frontmatter } = post
 
   if (!post) {
     return null
   }
 
   return (
-    <AmpLayout>
+    <AmpLayout title={frontmatter.title}>
+      <Published post={post} showComments={false} />
+      {isIntroToWebpackMiniSeries(frontmatter.tags) && (
+        <IntroToWebpackMiniSeries currentUrl={location.pathname} />
+      )}
       <div dangerouslySetInnerHTML={{ __html: post.html }} />
     </AmpLayout>
   )

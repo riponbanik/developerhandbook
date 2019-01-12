@@ -4,7 +4,14 @@ const CATEGORIES_MAP = {
   'VS Code': 'vs-code'
 }
 
-const DEFAULT_CATEGORIES = ['C#', 'Career', 'TypeScript', 'Angular', 'Unit Testing']
+const DEFAULT_CATEGORIES = [
+  'C#',
+  'Career',
+  'JavaScript',
+  'TypeScript',
+  'React',
+  'Unit Testing'
+]
 
 function getCategoryUrlFriendly(category) {
   return category in CATEGORIES_MAP

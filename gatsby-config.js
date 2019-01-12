@@ -73,8 +73,8 @@ module.exports = {
         `,
         feeds: [
           {
-            serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.edges.map(edge => {
+            serialize: ({ query: { site, allMarkdownRemark } }) =>
+              allMarkdownRemark.edges.map(edge => {
                 const url = `${
                   site.siteMetadata.siteUrl
                 }/${edge.node.frontmatter.categories[0].toLowerCase()}${
@@ -87,8 +87,7 @@ module.exports = {
                   guid: url,
                   custom_elements: [{ 'content:encoded': edge.node.html }]
                 })
-              })
-            },
+              }),
             query: `
               {
                 allMarkdownRemark(
@@ -120,7 +119,10 @@ module.exports = {
     `gatsby-plugin-sass`,
     `gatsby-plugin-postcss`,
     {
-      resolve: `gatsby-plugin-sitemap`
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        exclude: ['*/amp/']
+      }
     },
     'gatsby-plugin-no-sourcemaps',
     {
@@ -136,6 +138,31 @@ module.exports = {
         icon: `src/images/code.png` // This path is relative to the root of the site.
       }
     },
-    'gatsby-plugin-remove-serviceworker'
+    'gatsby-plugin-remove-serviceworker',
+    {
+      resolve: `gatsby-plugin-amp`,
+      options: {
+        analytics: {
+          type: 'gtag',
+          dataCredentials: 'include',
+          config: {
+            vars: {
+              gtag_id: googleTrackingId,
+              config: {
+                [googleTrackingId]: {
+                  page_location: '{{pathname}}'
+                }
+              }
+            }
+          }
+        },
+        canonicalBaseUrl: baseUrl,
+        components: ['amp-form'],
+        excludedPaths: ['/404*', '/'],
+        pathIdentifier: '/amp/',
+        relAmpHtmlPattern: '{{canonicalBaseUrl}}{{pathname}}{{pathIdentifier}}',
+        useAmpClientIdApi: true
+      }
+    }
   ]
 }

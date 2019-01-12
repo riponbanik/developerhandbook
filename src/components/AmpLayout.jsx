@@ -1,10 +1,17 @@
 import * as React from 'react'
 
-function Template({ children }) {
+import Nav from './Nav'
+import Jumbotron from './Jumbotron'
+
+function Template({ children, title }) {
   return (
-    <main id="content" role="main" style={{ padding: '20px' }}>
-      {children}
-    </main>
+    <>
+      <Nav />
+      <Jumbotron title={title} />
+      <main id="content" role="main" style={{ padding: '0 15px' }}>
+        {children}
+      </main>
+    </>
   )
 }
 
